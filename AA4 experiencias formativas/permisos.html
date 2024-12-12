@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Solicitudes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('pngtree-abstract-background-png-image_4121274.jpg'); /* URL de fondo */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: -1;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            color: #007bff;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            resize: none;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <h1>Formulario de Solicitudes</h1>
+        <div class="input-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" placeholder="Ingrese su nombre">
+        </div>
+        <div class="input-group">
+            <label for="tipo">Tipo de Solicitud:</label>
+            <select id="tipo">
+                <option value="Queja">Queja</option>
+                <option value="Renuncia">Renuncia</option>
+                <option value="Ausencia">Ausencia</option>
+                <option value="Otros">Otros</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" rows="5" placeholder="Describa su solicitud..."></textarea>
+        </div>
+        <button class="btn" onclick="enviarSolicitud()">Enviar Solicitud</button>
+
+        <h2>Solicitudes Registradas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-solicitudes">
+                <!-- Solicitudes agregadas aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function enviarSolicitud() {
+            const nombre = document.getElementById("nombre").value.trim();
+            const tipo = document.getElementById("tipo").value;
+            const descripcion = document.getElementById("descripcion").value.trim();
+            const fecha = new Date().toLocaleString();
+
+            if (nombre === "" || descripcion === "") {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
+
+            // Agregar solicitud a la tabla
+            const tabla = document.getElementById("tabla-solicitudes");
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${nombre}</td>
+                <td>${tipo}</td>
+                <td>${descripcion}</td>
+                <td>${fecha}</td>
+            `;
+            tabla.appendChild(fila);
+
+            // Limpiar formulario
+            document.getElementById("nombre").value = "";
+            document.getElementById("descripcion").value = "";
+            alert("Solicitud enviada exitosamente.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f8ff; /* Fondo blanco */
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Contenedor principal */
+        .contenedor-principal {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 12px;
+            background-color: #ffffff; /* Fondo blanco */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contenedor del calendario */
+        .calendario-container {
+            width: 75%;
+            background-color: #ffffff; /* Fondo blanco */
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: box-shadow 0.3s ease;
+            border: 2px solid #333; /* Bordes negros */
+        }
+
+        .calendario-container:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header del calendario */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #ffffff; /* Fondo blanco */
+            color: #333; /* Texto negro */
+            border-radius: 10px;
+        }
+
+        .header button {
+            padding: 8px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #333; /* Fondo negro */
+            border: 1px solid #222; /* Bordes más oscuros */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .header button:hover {
+            background-color: #555; /* Gris oscuro al hacer hover */
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Grid de días */
+        .dias {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .dias div {
+            padding: 30px;
+            border: 1px solid #333; /* Bordes negros */
+            text-align: center;
+            background-color: #f9f9f9; /* Fondo blanco */
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: #333; /* Texto negro */
+        }
+
+        /* Efecto de resaltado cuando pasa el mouse */
+        .dias div:hover {
+            background-color: #ddd; /* Gris claro al pasar el ratón */
+            transform: scale(1.05);
+        }
+
+        .dias .header-dias {
+            font-weight: bold;
+            background-color: #ccc; /* Gris claro para los encabezados */
+            color: #333;
+        }
+
+        .dias .dia-evento {
+            background-color: #666; /* Gris intermedio para los días con evento */
+            color: white;
+        }
+
+        .dias .dia-evento:hover {
+            background-color: #444; /* Gris más oscuro al hacer hover */
+        }
+
+        .dias .dia-actual {
+            background-color: #ffcc00; /* Resaltado amarillo para el día actual */
+            color: #333; /* Texto negro */
+        }
+
+        /* Detalles del curso */
+        .detalles-curso {
+            width: 25%;
+            padding: 20px;
+            background-color: #ffffff; /* Fondo blanco */
+            border-radius: 10px;
+            border: 1px solid #333;
+            text-align: left;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: none;
+            color: #333;
+        }
+
+        .detalles-curso h3 {
+            margin-top: 0;
+            color: #333; /* Título en negro */
+        }
+
+        .detalles-curso p {
+            color: #333; /* Color de texto para el contenido */
+        }
+
+        /* Hora en tiempo real */
+        .hora-real {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Responsive design para pantallas pequeñas */
+        @media (max-width: 800px) {
+            .contenedor-principal {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .calendario-container, .detalles-curso {
+                width: 100%;
+            }
+
+            .header h2 {
+                font-size: 20px;
+            }
+
+            .dias {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+            }
+
+            .dias div {
+                font-size: 14px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <!-- Hora en tiempo real -->
+        <div class="hora-real" id="hora-real"></div>
+
+        <div class="calendario-container">
+            <div class="header">
+                <button id="prev">Anterior</button>
+                <h2 id="mes-actual"></h2>
+                <button id="next">Siguiente</button>
+            </div>
+
+            <div class="dias" id="calendario"></div>
+        </div>
+
+        <div class="detalles-curso" id="detalles-curso">
+            <h3>Detalles del Curso</h3>
+            <p id="curso-titulo"></p>
+            <p id="curso-descripcion"></p>
+            <p id="curso-hora"></p>
+            <p id="curso-aula"></p>
+        </div>
+    </div>
+
+    <script>
+        // Variables y funciones del calendario
+        const meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        const diasSemana = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+        
+        const eventos = {
+            
+            "2024-12-02": {
+                titulo: "Matematicas aplicadas al desarrollo",
+                descripcion: "Matematicas aplicadas al desarrollo",
+                hora: "09:00 AM",
+                aula: "Aula 202"
+            
+            },
+            "2024-12-04": {
+                titulo: "Algoritmos para la solucion de problemas",
+                descripcion: "Algoritmos para la solucion de problemas.",
+                hora: "11:00 AM",
+                aula: "Aula 404"
+           
+            
+            },
+            "2024-12-07": {
+                titulo: "Matematicas aplicadas al desarrollo",
+                descripcion: "Matematicas aplicadas al desarrollo.",
+                hora: "02:00 PM",
+                aula: "Aula 707"
+            },
+            "2024-12-09": {
+                titulo: "Matematicas aplicadas al desarrollo",
+                descripcion: "Matematicas aplicadas al desarrollo.",
+                hora: "08:00 AM",
+                aula: "Aula 101"
+           
+            },
+            "2024-12-11": {
+                titulo: "Curso de Física",
+                descripcion: "Algoritmos para la solucion de problemas.",
+                hora: "10:00 AM",
+                aula: "Aula 303"
+            },
+            "2024-12-14": {
+                titulo: "Matematicas aplicadas al desarrollo",
+                descripcion: "Matematicas aplicadas al desarrollo.",
+                hora: "01:00 PM",
+                aula: "Aula 606"
+            },
+            
+           
+            
+           
+            
+            
+            
+        };
+
+        // Mostrar la fecha actual en el calendario y hora en tiempo real
+        const fechaActual = new Date();
+        let mesActual = fechaActual.getMonth(); // Obtener el mes actual (0-11)
+        let añoActual = fechaActual.getFullYear(); // Obtener el año actual
+
+        // Función para mostrar el calendario
+        function mostrarCalendario(mes, año) {
+            const primerDiaDelMes = new Date(año, mes, 1);
+            const ultimoDiaDelMes = new Date(año, mes + 1, 0);
+            const diasDelMes = [];
+            
+            // Obtener los días de la semana para el primer día del mes
+            const diaInicio = primerDiaDelMes.getDay(); 
+
+            // Llenar los días del calendario
+            for (let i = 0; i < diaInicio; i++) {
+                diasDelMes.push(""); // Agregar espacio vacío para los días anteriores al primer día del mes
+            }
+
+            for (let i = 1; i <= ultimoDiaDelMes.getDate(); i++) {
+                diasDelMes.push(i);
+            }
+
+            // Crear los días en el calendario
+            const calendario = document.getElementById('calendario');
+            calendario.innerHTML = ""; // Limpiar el calendario
+
+            // Mostrar los encabezados de los días
+            diasSemana.forEach(dia => {
+                const diaElemento = document.createElement('div');
+                diaElemento.textContent = dia;
+                diaElemento.classList.add('header-dias');
+                calendario.appendChild(diaElemento);
+            });
+
+            // Mostrar los días del mes
+            diasDelMes.forEach((dia, index) => {
+                const diaElemento = document.createElement('div');
+                diaElemento.textContent = dia;
+
+                // Resaltar el día actual
+                if (dia === fechaActual.getDate() && mes === fechaActual.getMonth() && año === fechaActual.getFullYear()) {
+                    diaElemento.classList.add('dia-actual');
+                }
+
+                // Verificar si hay evento para este día
+                const fechaDia = `${año}-${(mes + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+                if (eventos[fechaDia]) {
+                    diaElemento.classList.add('dia-evento');
+                    diaElemento.addEventListener('click', () => mostrarDetallesCurso(fechaDia));
+                }
+
+                calendario.appendChild(diaElemento);
+            });
+
+            // Mostrar el mes actual en el encabezado
+            document.getElementById('mes-actual').textContent = `${meses[mes]} ${año}`;
+        }
+
+        // Función para mostrar los detalles del curso
+        function mostrarDetallesCurso(fecha) {
+            const detalles = eventos[fecha];
+            document.getElementById('curso-titulo').textContent = `Título: ${detalles.titulo}`;
+            document.getElementById('curso-descripcion').textContent = `Descripción: ${detalles.descripcion}`;
+            document.getElementById('curso-hora').textContent = `Hora: ${detalles.hora}`;
+            document.getElementById('curso-aula').textContent = `Aula: ${detalles.aula}`;
+            document.getElementById('detalles-curso').style.display = 'block';
+        }
+
+        // Función para actualizar la hora en tiempo real
+        function actualizarHora() {
+            const hora = new Date();
+            const horaTexto = `${hora.getHours().toString().padStart(2, '0')}:${hora.getMinutes().toString().padStart(2, '0')}:${hora.getSeconds().toString().padStart(2, '0')}`;
+            document.getElementById('hora-real').textContent = `Hora actual: ${horaTexto}`;
+        }
+
+        // Inicializar el calendario y actualizar la hora en tiempo real
+        mostrarCalendario(mesActual, añoActual);
+        actualizarHora();
+        setInterval(actualizarHora, 1000); // Actualizar la hora cada segundo
+
+        // Cambiar al mes siguiente
+        document.getElementById('next').addEventListener('click', () => {
+            mesActual++;
+            if (mesActual > 11) {
+                mesActual = 0;
+                añoActual++;
+            }
+            mostrarCalendario(mesActual, añoActual);
+        });
+
+        // Cambiar al mes anterior
+        document.getElementById('prev').addEventListener('click', () => {
+            mesActual--;
+            if (mesActual < 0) {
+                mesActual = 11;
+                añoActual--;
+            }
+            mostrarCalendario(mesActual, añoActual);
+        });
+    </script>
+</body>
+</html>

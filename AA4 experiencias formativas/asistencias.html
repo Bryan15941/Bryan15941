@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencias</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            transition: background-color 0.3s;
+        }
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .turno {
+            margin: 20px 0;
+        }
+        .turno h2 {
+            margin-bottom: 10px;
+            color: #007bff;
+            font-size: 24px;
+        }
+        .aulas {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .aula {
+            padding: 30px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 200px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 18px;
+        }
+        .aula:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .lista-estudiantes {
+            display: none;
+            margin-top: 20px;
+        }
+        .regresar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .regresar:hover {
+            background-color: #d32f2f;
+        }
+        .asistencia-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .fecha-selector {
+            margin-bottom: 20px;
+        }
+        .fecha-selector button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .fecha-selector button:hover {
+            background-color: #0056b3;
+        }
+        .asistencia-form table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .asistencia-form th, .asistencia-form td {
+            padding: 20px;
+            border: 1px solid #ddd;
+            text-align: center;
+            min-width: 150px;
+        }
+        .asistencia-form th {
+            background-color: #007bff;
+            color: white;
+        }
+        .asistencia-form button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .asistencia-form button:hover {
+            background-color: #218838;
+        }
+        .alerta {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .grafico {
+            margin-top: 20px;
+        }
+        .exportar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .exportar:hover {
+            background-color: #e0a800;
+        }
+        .agregar-estudiante {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="aulas">
+        <div class="turno">
+            <h2>Turno Mañana</h2>
+            <div class="aulas">
+                <div class="aula" onclick="mostrarFechas(1)">Aula 6050</div>
+                <div class="aula" onclick="mostrarFechas(2)">Aula 7015</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fecha-selector" class="fecha-selector"></div>
+
+    <div id="lista-estudiantes" class="lista-estudiantes">
+        <div id="form-asistencia" class="asistencia-form"></div>
+        <button class="regresar" onclick="regresarAulas()">Regresar a Aulas</button>
+        <div id="alerta" class="alerta"></div>
+        <div id="grafico" class="grafico"></div>
+        <button class="exportar" onclick="exportarAsistencia()">Exportar Asistencia</button>
+        <div id="agregar-estudiante" class="agregar-estudiante">
+            <button onclick="agregarEstudiante()">Agregar Estudiante</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const estudiantes = {
+        1: [
+            'Juan Pérez', 'Ana Gómez', 'Luis Rodríguez', 'María López', 'Pedro Sánchez',
+            'Carla Martínez', 'José Fernández', 'Lucía García', 'Antonio Jiménez', 'Isabel Ruiz',
+            'Jorge Sánchez', 'Sofía Pérez', 'Raúl Díaz', 'Patricia González', 'David Ramírez',
+            'Carmen López', 'Francisco Torres', 'Adriana Morales', 'Juan Gómez', 'Rosa Fernández',
+            'Luis Méndez', 'Marta Ramírez', 'Pedro González', 'Laura García', 'Carlos Martínez'
+        ],
+        2: [
+            'Carlos Sánchez', 'Patricia Martín', 'Pedro Díaz', 'Elena Cruz', 'Rafael Torres',
+            'Sandra Pérez', 'José Antonio García', 'María Martín', 'Cristina Gómez', 'Juan Rodríguez',
+            'David López', 'Antonio Fernández', 'Sofía Ruiz', 'Luis Díaz', 'Pablo González',
+            'Laura Jiménez', 'Javier Torres', 'Ana Sánchez', 'Carlos Fernández', 'Marta Ruiz',
+            'José Gómez', 'Patricia Sánchez', 'Luis Ramírez', 'Sofía Martín', 'Juan Ramírez'
+        ]
+    };
+
+    const fechas = {
+        1: ['04/12/2024', '07/12/2024'],
+        2: ['11/12/2024']
+    };
+
+    function mostrarFechas(aula) {
+        document.getElementById("aulas").style.display = 'none';
+
+        const fechaSelectorDiv = document.getElementById("fecha-selector");
+        fechaSelectorDiv.innerHTML = '';
+
+        const titulo = document.createElement('h3');
+        titulo.textContent = "Selecciona una fecha";
+        fechaSelectorDiv.appendChild(titulo);
+
+        fechas[aula].forEach(fecha => {
+            const button = document.createElement('button');
+            button.textContent = fecha;
+            button.onclick = function() {
+                mostrarEstudiantes(aula, fecha);
+            };
+            fechaSelectorDiv.appendChild(button);
+        });
+
+        fechaSelectorDiv.style.display = 'block';
+    }
+
+    function mostrarEstudiantes(aula, fecha) {
+        document.getElementById("fecha-selector").style.display = 'none';
+        document.getElementById("lista-estudiantes").style.display = 'block';
+
+        const lista = estudiantes[aula];
+        mostrarFormularioAsistencia(lista, fecha);
+    }
+
+    function mostrarFormularioAsistencia(lista, fecha) {
+        const formDiv = document.getElementById("form-asistencia");
+        formDiv.innerHTML = '';
+
+        const form = document.createElement('form');
+        const table = document.createElement('table');
+        
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        headerRow.appendChild(document.createElement('th'));
+        const thFecha = document.createElement('th');
+        thFecha.colSpan = 5;
+        thFecha.textContent = `Asistencia para: ${fecha}`;
+        headerRow.appendChild(thFecha);
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        lista.forEach(estudiante => {
+            const tr = document.createElement('tr');
+            const tdName = document.createElement('td');
+            tdName.textContent = estudiante;
+            const tdCheck = document.createElement('td');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            tdCheck.appendChild(checkbox);
+            tr.appendChild(tdName);
+            tr.appendChild(tdCheck);
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        formDiv.appendChild(table);
+
+        const submitButton = document.createElement('button');
+        submitButton.textContent = 'Registrar Asistencia';
+        submitButton.onclick = function(event) {
+            event.preventDefault();
+            registrarAsistencia();
+        };
+
+        formDiv.appendChild(submitButton);
+    }
+
+    function registrarAsistencia() {
+        const formDiv = document.getElementById("form-asistencia");
+        // Aquí deberías implementar la lógica para guardar la asistencia.
+        // Por ahora, solo muestra un mensaje.
+        let asistencia = {};
+        const checkboxes = document.querySelectorAll('#form-asistencia input[type="checkbox"]');
+        checkboxes.forEach((checkbox, index) => {
+            asistencia[estudiantes[1][index]] = checkbox.checked;
+        })
+        console.log(asistencia);
+        formDiv.innerHTML = "Asistencia registrada correctamente!";
+    }
+
+    function regresarAulas() {
+        document.getElementById("aulas").style.display = 'flex';
+        document.getElementById("fecha-selector").style.display = 'none';
+        document.getElementById("lista-estudiantes").style.display = 'none';
+        document.getElementById("form-asistencia").innerHTML = '';
+        document.getElementById("alerta").style.display = 'none';
+        document.getElementById("grafico").innerHTML = '';
+    }
+
+    function exportarAsistencia() {
+        // Implementar la lógica para exportar la asistencia.
+        alert('Función de exportación no implementada.');
+    }
+
+    function agregarEstudiante() {
+        // Implementar la lógica para agregar un estudiante.
+        alert('Función para agregar estudiante no implementada.');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte Técnico | Instituto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #004aad;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        section {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #004aad;
+        }
+        .faq {
+            margin-top: 20px;
+        }
+        .faq ul {
+            list-style: none;
+            padding: 0;
+        }
+        .faq li {
+            background-color: #e8f0fe;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .faq li:hover {
+            background-color: #004aad;
+            color: white;
+        }
+        .faq .respuesta {
+            display: none;
+            padding-top: 10px;
+            padding-left: 20px;
+            color: #333;
+        }
+        footer {
+            background-color: #004aad;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .button {
+            background-color: #004aad;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #003a8c;
+        }
+        .form-container {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #004aad;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #003a8c;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Soporte Técnico - certus</h1>
+    <p>Estamos aquí para ayudarte a resolver cualquier inconveniente técnico.</p>
+</header>
+
+<section>
+    <h2>¿Necesitas ayuda?</h2>
+    <p>Si tienes algún problema técnico con las herramientas educativas, plataformas o recursos del instituto, puedes seguir los pasos a continuación para resolver tu problema o ponerte en contacto con nuestro equipo de soporte.</p>
+
+    <div class="faq">
+        <h3>Preguntas Frecuentes</h3>
+        <ul>
+            <li onclick="toggleAnswer('respuesta1')">¿Cómo restablezco mi contraseña?</li>
+            <div id="respuesta1" class="respuesta">
+                <p>Para restablecer tu contraseña, haz clic en "Olvidé mi contraseña" en la página de inicio de sesión y sigue las instrucciones que recibirás en tu correo electrónico.</p>
+            </div>
+            <li onclick="toggleAnswer('respuesta2')">¿Por qué no puedo acceder a los recursos en línea?</li>
+            <div id="respuesta2" class="respuesta">
+                <p>Verifica tu conexión a Internet y asegúrate de estar utilizando el navegador recomendado. Si el problema persiste, intenta borrar el caché de tu navegador.</p>
+            </div>
+            <li onclick="toggleAnswer('respuesta3')">¿Cómo actualizar el software del aula virtual?</li>
+            <div id="respuesta3" class="respuesta">
+                <p>El aula virtual se actualiza automáticamente. Si experimentas problemas, verifica que tu dispositivo cumpla con los requisitos mínimos o contacta con el soporte técnico.</p>
+            </div>
+            <li onclick="toggleAnswer('respuesta4')">¿Qué hacer si mi computadora no se conecta a la red?</li>
+            <div id="respuesta4" class="respuesta">
+                <p>Revisa la conexión del cable de red o la señal Wi-Fi. Si el problema persiste, reinicia tu dispositivo o contacta al soporte técnico del instituto para revisar la configuración de la red.</p>
+            </div>
+        </ul>
+    </div>
+
+    <div class="contact-info">
+        <div>
+            <h3>Contacto</h3>
+            <p>Para obtener ayuda personalizada, puedes ponerte en contacto con nuestro equipo de soporte a través de las siguientes vías:</p>
+            <ul>
+                <li><strong>Correo electrónico:</strong> <a href="gmail:certus@certus.edu.pe">certus@certus.edu.pe</a></li>
+                <li><strong>Teléfono:</strong> +51 993 517 789</li>
+                <li><strong>Horario de atención:</strong> Lunes a Viernes, 9:00 AM - 6:00 PM</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Formulario de Contacto</h3>
+            <p>Si prefieres escribirnos, completa el siguiente formulario y nos pondremos en contacto contigo lo antes posible:</p>
+            <div class="form-container">
+                <form action="#" method="post">
+                    <input type="text" name="nombre" placeholder="Tu nombre" required><br>
+                    <input type="email" name="email" placeholder="Tu correo electrónico" required><br>
+                    <textarea name="mensaje" rows="5" placeholder="Describe el problema que estás experimentando..." required></textarea><br>
+                    <input type="submit" value="Enviar Solicitud">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<footer>
+    <p>&copy; 2024 certus - Todos los derechos reservados</p>
+</footer>
+
+<script>
+    function toggleAnswer(id) {
+        var answer = document.getElementById(id);
+        if (answer.style.display === "block") {
+            answer.style.display = "none";
+        } else {
+            answer.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>

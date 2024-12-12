@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla de Pagos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('NEGOCIOS-CERTUS-BLOG.png'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background-color: rgba(255, 255, 255, 0.8); 
+            z-index: -1;
+        }
+        .planilla-container {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            text-align: center;
+            position: relative; 
+        }
+        .planilla-container h1 {
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 5px;
+            color: white;
+        }
+        .pagado {
+            background-color: #28a745;
+        }
+        .pendiente {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div> 
+    <div class="planilla-container">
+        <h1>Planilla de Pagos</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mes</th>
+                    <th>Día</th>
+                    <th>Hora</th>
+                    <th>Método de Pago</th>
+                    <th>Monto (S/)</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-pagos"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        const mesActual = new Date().getMonth();
+
+        function generarPagos() {
+            const pagos = [];
+            meses.forEach((mes, index) => {
+                const estado = index === mesActual ? "Pendiente" : "Pagado";
+                const dia = Math.floor(Math.random() * 28) + 1;
+                const hora = `${Math.floor(Math.random() * 12) + 1}:${String(Math.floor(Math.random() * 60)).padStart(2, "0")} ${
+                    Math.random() > 0.5 ? "AM" : "PM"
+                }`;
+                const metodo = Math.random() > 0.5 ? "Efectivo" : "Tarjeta";
+                const monto = "S/ 2600.00"; // Monto fijo en soles
+                pagos.push({ mes, dia, hora, metodo, monto, estado });
+            });
+            return pagos;
+        }
+
+        window.onload = function() {
+            const pagos = generarPagos();
+            const tablaPagos = document.getElementById("tabla-pagos");
+            tablaPagos.innerHTML = "";
+            pagos.forEach(pago => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${pago.mes}</td>
+                    <td>${pago.dia}</td>
+                    <td>${pago.hora}</td>
+                    <td>${pago.metodo}</td>
+                    <td>${pago.monto}</td>
+                    <td><span class="status ${pago.estado.toLowerCase()}">${pago.estado}</span></td>
+                `;
+                tablaPagos.appendChild(fila);
+            });
+        };
+    </script>
+</body>
+</html>

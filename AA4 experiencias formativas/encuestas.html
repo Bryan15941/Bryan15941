@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta al Docente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .response-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #28a745;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-container button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .btn-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .survey {
+            display: none;
+        }
+
+        .survey.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Encuesta para Docentes</h1>
+        <p>Por favor, selecciona una encuesta para completarla.</p>
+
+        <div class="btn-container">
+            <button onclick="showSurvey(1)">Encuesta 1</button>
+            <button onclick="showSurvey(2)">Encuesta 2</button>
+            <button onclick="showSurvey(3)">Encuesta 3</button>
+        </div>
+
+        <!-- Encuesta 1 -->
+        <div class="survey" id="survey1">
+            <h2>Encuesta 1: Satisfacción General</h2>
+            <form id="surveyForm1">
+                <div class="question">
+                    <label for="nombre1">Nombre del docente:</label>
+                    <input type="text" id="nombre1" name="nombre" required>
+                </div>
+
+                <div class="question">
+                    <label for="satisfaccion1">¿Cómo calificarías tu satisfacción general con el instituto?</label>
+                    <select id="satisfaccion1" name="satisfaccion" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Excelente">Excelente</option>
+                        <option value="Buena">Buena</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Mala">Mala</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label for="comentarios1">Comentarios adicionales:</label>
+                    <textarea id="comentarios1" name="comentarios" rows="4" placeholder="Escribe cualquier otro comentario..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar Encuesta 1</button>
+            </form>
+            <div id="responseMessage1" class="response-message"></div>
+            <button onclick="goBack()" class="btn-submit">Regresar</button>
+        </div>
+
+        <!-- Encuesta 2 -->
+        <div class="survey" id="survey2">
+            <h2>Encuesta 2: Formación y Recursos</h2>
+            <form id="surveyForm2">
+                <div class="question">
+                    <label for="nombre2">Nombre del docente:</label>
+                    <input type="text" id="nombre2" name="nombre" required>
+                </div>
+
+                <div class="question">
+                    <label for="formacion2">¿Cómo calificarías la formación profesional que recibes en este instituto?</label>
+                    <input type="radio" id="formacion_buena2" name="formacion" value="Buena" required>
+                    <label for="formacion_buena2">Buena</label>
+                    <input type="radio" id="formacion_regular2" name="formacion" value="Regular">
+                    <label for="formacion_regular2">Regular</label>
+                    <input type="radio" id="formacion_mala2" name="formacion" value="Mala">
+                    <label for="formacion_mala2">Mala</label>
+                </div>
+
+                <div class="question">
+                    <label for="recursos">¿Cómo calificarías los recursos materiales disponibles para tu labor docente?</label>
+                    <select id="recursos" name="recursos" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Adecuados">Adecuados</option>
+                        <option value="Inadecuados">Inadecuados</option>
+                        <option value="Insuficientes">Insuficientes</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label for="mejoras2">¿Qué sugerencias tienes para mejorar los recursos educativos?</label>
+                    <textarea id="mejoras2" name="mejoras" rows="4" placeholder="Escribe tus sugerencias aquí..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar Encuesta 2</button>
+            </form>
+            <div id="responseMessage2" class="response-message"></div>
+            <button onclick="goBack()" class="btn-submit">Regresar</button>
+        </div>
+
+        <!-- Encuesta 3 -->
+        <div class="survey" id="survey3">
+            <h2>Encuesta 3: Opinión sobre el Clima Escolar</h2>
+            <form id="surveyForm3">
+                <div class="question">
+                    <label for="nombre3">Nombre del docente:</label>
+                    <input type="text" id="nombre3" name="nombre" required>
+                </div>
+
+                <div class="question">
+                    <label for="clima">¿Cómo calificarías el clima laboral en el instituto?</label>
+                    <select id="clima" name="clima" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="Excelente">Excelente</option>
+                        <option value="Bueno">Bueno</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Malo">Malo</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label for="relaciones">¿Cómo calificarías las relaciones entre docentes y personal administrativo?</label>
+                    <input type="radio" id="relaciones_buenas" name="relaciones" value="Buenas" required>
+                    <label for="relaciones_buenas">Buenas</label>
+                    <input type="radio" id="relaciones_regulares" name="relaciones" value="Regulares">
+                    <label for="relaciones_regulares">Regulares</label>
+                    <input type="radio" id="relaciones_malas" name="relaciones" value="Malas">
+                    <label for="relaciones_malas">Malas</label>
+                </div>
+
+                <div class="question">
+                    <label for="sugerencias_clima">¿Tienes sugerencias para mejorar el clima escolar?</label>
+                    <textarea id="sugerencias_clima" name="sugerencias_clima" rows="4" placeholder="Escribe tus sugerencias aquí..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar Encuesta 3</button>
+            </form>
+            <div id="responseMessage3" class="response-message"></div>
+            <button onclick="goBack()" class="btn-submit">Regresar</button>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar la encuesta correspondiente
+        function showSurvey(surveyId) {
+            // Ocultar todas las encuestas
+            document.querySelectorAll('.survey').forEach(function(survey) {
+                survey.classList.remove('active');
+            });
+
+            // Mostrar la encuesta seleccionada
+            document.getElementById('survey' + surveyId).classList.add('active');
+        }
+
+        // Función de regresar a la selección de encuestas
+        function goBack() {
+            // Ocultar todas las encuestas
+            document.querySelectorAll('.survey').forEach(function(survey) {
+                survey.classList.remove('active');
+            });
+        }
+
+        // Función para manejar el envío de las encuestas
+        function handleSurveySubmit(formId, responseId) {
+            document.getElementById(formId).addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Mostrar mensaje de respuesta
+                const responseMessage = `¡Gracias por completar la encuesta! Tus respuestas han sido enviadas correctamente.`;
+                document.getElementById(responseId).innerHTML = responseMessage;
+            });
+        }
+
+        // Llamada para cada encuesta
+        handleSurveySubmit('surveyForm1', 'responseMessage1');
+        handleSurveySubmit('surveyForm2', 'responseMessage2');
+        handleSurveySubmit('surveyForm3', 'responseMessage3');
+    </script>
+</body>
+</html>

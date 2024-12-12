@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Certus</title>
+    <style>
+        /* Estilos generales */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            font-family: sans-serif; /* Added a default font */
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .left-side {
+            background-color: #002c5a;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centered vertically */
+            align-items: center; /* Centered horizontally */
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+        }
+
+        .intro-text {
+            font-size: 36px; /* Increased font size */
+            font-weight: bold;
+            text-align: center; /* Centered text */
+            line-height: 1.2;
+            margin-top: 50px; /* Adjusted margin */
+        }
+
+        .right-side {
+            background-color: #f0f0f0;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            padding: 40px; /* Increased padding */
+            width: 100%;
+            max-width: 400px;
+            background-color: white; /* White background for better contrast */
+            border-radius: 8px; /* Added border radius */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added box shadow */
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px; /* Increased margin */
+        }
+
+        input {
+            width: calc(100% - 22px); /* Adjusted width to account for padding */
+            padding: 12px; /* Increased padding */
+            margin: 15px 0; /* Increased margin */
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        button {
+            width: 100%;
+            padding: 12px; /* Increased padding */
+            background-color: #002c5a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px; /* Increased font size */
+        }
+
+        button:hover {
+            background-color: #004080; /* Darker hover color */
+        }
+
+        .bottom-image {
+            position: absolute;
+            bottom: 20px;
+            right: 20px; /* Moved to the right */
+            width: 400px;
+        }
+
+        /* Estilos para el mensaje de error */
+        .error-message {
+            display: none;
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold; /* Added bold weight */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="left-side">
+            <img src="https://www.certus.edu.pe/wp-content/uploads/2018/12/certus-logo-1-01-copy-3@2x.png" alt="Logo Certus" class="logo">
+            <p class="intro-text">Bienvenido(a) al Portal Certus</p>
+            <img src="https://intranet.certus.edu.pe/Login/Content/imagenes/barras-certus.png" alt="Imagen Inferior Certus" class="bottom-image">
+        </div>
+        <div class="right-side">
+            <div class="login-container">
+                <h2>Iniciar Sesión</h2>
+                <form id="loginForm">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required><br><br>
+                    <button type="submit">Ingresar</button>
+                </form>
+                <div id="error-message" class="error-message">
+                    Las credenciales son incorrectas. Intente nuevamente.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

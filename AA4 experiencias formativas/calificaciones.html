@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Calificaciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container, .table-container {
+            margin-top: 30px;
+        }
+        .form-container input, .form-container select, .form-container button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .form-container button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table-container th, .table-container td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .table-container th {
+            background-color: #007bff;
+            color: white;
+        }
+        .table-container tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .actions button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .actions button:hover {
+            background-color: #d32f2f;
+        }
+        .actions .edit {
+            background-color: #ffc107;
+            color: white;
+        }
+        .actions .edit:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Gestión de Calificaciones</h1>
+        <p>Ingrese las calificaciones de los estudiantes a continuación.</p>
+    </div>
+
+    <!-- Formulario para agregar o editar calificaciones -->
+    <div class="form-container">
+        <h3>Agregar o Editar Calificación</h3>
+        <form id="calificacion-form">
+            <input type="text" id="nombre-estudiante" placeholder="Nombre del Estudiante" required>
+            <select id="materia" required>
+                <option value="">Selecciona una Materia</option>
+                <option value="Matemáticas">Matemáticas</option>
+                <option value="Historia">Historia</option>
+                <option value="Ciencias">Ciencias</option>
+                <option value="Lengua Española">Lengua Española</option>
+            </select>
+            <input type="number" id="calificacion" placeholder="Calificación (0-20)" min="0" max="20" required>
+            <button type="submit">Guardar Calificación</button>
+        </form>
+    </div>
+
+    <!-- Tabla para mostrar las calificaciones -->
+    <div class="table-container">
+        <h3>Calificaciones Registradas</h3>
+        <table id="tabla-calificaciones">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Materia</th>
+                    <th>Calificación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas de calificaciones se generarán aquí -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Arreglo para almacenar las calificaciones
+    let calificaciones = [];
+
+    // Función para renderizar la tabla de calificaciones
+    function renderizarTabla() {
+        const tabla = document.getElementById("tabla-calificaciones").getElementsByTagName('tbody')[0];
+        tabla.innerHTML = '';  // Limpiar la tabla antes de volver a llenarla
+
+        calificaciones.forEach((calificacion, index) => {
+            const fila = document.createElement("tr");
+
+            // Columna 1: Nombre del estudiante
+            const tdNombre = document.createElement("td");
+            tdNombre.textContent = calificacion.nombre;
+            fila.appendChild(tdNombre);
+
+            // Columna 2: Materia
+            const tdMateria = document.createElement("td");
+            tdMateria.textContent = calificacion.materia;
+            fila.appendChild(tdMateria);
+
+            // Columna 3: Calificación
+            const tdCalificacion = document.createElement("td");
+            tdCalificacion.textContent = calificacion.calificacion;
+            fila.appendChild(tdCalificacion);
+
+            // Columna 4: Acciones (Editar y Eliminar)
+            const tdAcciones = document.createElement("td");
+            const accionesDiv = document.createElement("div");
+            accionesDiv.classList.add("actions");
+
+            // Botón Editar
+            const btnEditar = document.createElement("button");
+            btnEditar.textContent = "Editar";
+            btnEditar.classList.add("edit");
+            btnEditar.onclick = () => editarCalificacion(index);
+            accionesDiv.appendChild(btnEditar);
+
+            // Botón Eliminar
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Eliminar";
+            btnEliminar.onclick = () => eliminarCalificacion(index);
+            accionesDiv.appendChild(btnEliminar);
+
+            tdAcciones.appendChild(accionesDiv);
+            fila.appendChild(tdAcciones);
+
+            tabla.appendChild(fila);
+        });
+    }
+
+    // Función para agregar o editar calificación
+    document.getElementById("calificacion-form").onsubmit = function(event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById("nombre-estudiante").value;
+        const materia = document.getElementById("materia").value;
+        const calificacion = document.getElementById("calificacion").value;
+
+        if (nombre && materia && calificacion >= 0 && calificacion <= 20) {
+            const nuevaCalificacion = { nombre, materia, calificacion };
+
+            // Si ya existe una calificación, la reemplazamos (edición)
+            const index = calificaciones.findIndex(c => c.nombre === nombre && c.materia === materia);
+            if (index !== -1) {
+                calificaciones[index] = nuevaCalificacion;
+            } else {
+                // Si no existe, agregamos una nueva calificación
+                calificaciones.push(nuevaCalificacion);
+            }
+
+            // Limpiar formulario
+            document.getElementById("calificacion-form").reset();
+
+            // Renderizar tabla de nuevo
+            renderizarTabla();
+        } else {
+            alert("Por favor, ingrese una calificación válida entre 0 y 20.");
+        }
+    };
+
+    // Función para eliminar una calificación
+    function eliminarCalificacion(index) {
+        if (confirm("¿Estás seguro de eliminar esta calificación?")) {
+            calificaciones.splice(index, 1);
+            renderizarTabla();
+        }
+    }
+
+    // Función para editar una calificación
+    function editarCalificacion(index) {
+        const calificacion = calificaciones[index];
+        document.getElementById("nombre-estudiante").value = calificacion.nombre;
+        document.getElementById("materia").value = calificacion.materia;
+        document.getElementById("calificacion").value = calificacion.calificacion;
+
+        // Cambiar el botón a "Actualizar" al editar
+        const submitButton = document.querySelector(".form-container button");
+        submitButton.textContent = "Actualizar Calificación";
+        
+        // Actualizar la función del formulario para modificar
+        document.getElementById("calificacion-form").onsubmit = function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById("nombre-estudiante").value;
+            const materia = document.getElementById("materia").value;
+            const calificacion = document.getElementById("calificacion").value;
+
+            if (nombre && materia && calificacion >= 0 && calificacion <= 20) {
+                calificaciones[index] = { nombre, materia, calificacion };
+
+                // Limpiar formulario y volver al estado inicial
+                document.getElementById("calificacion-form").reset();
+                submitButton.textContent = "Guardar Calificación";
+
+                renderizarTabla();
+            } else {
+                alert("Por favor, ingrese una calificación válida entre 0 y 20.");
+            }
+        };
+    }
+
+    // Inicializar con la tabla vacía
+    renderizarTabla();
+</script>
+
+</body>
+</html>

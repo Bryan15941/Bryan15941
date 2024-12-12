@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicados</title>
+    <style>
+        /* Estilos globales para la página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; /* Espaciado entre el contenido */
+            height: 100vh; /* Hacer que el cuerpo ocupe toda la altura de la ventana */
+        }
+
+        /* Contenedor de los comunicados */
+        #comunicados {
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px; /* Ajuste para evitar que se estire mucho en pantallas grandes */
+            margin: 20px;
+            overflow-y: auto; /* Permite hacer scroll si el contenido es largo */
+            flex-grow: 1; /* Hace que el contenedor crezca para ocupar todo el espacio disponible */
+        }
+
+        #comunicados h2 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        /* Estilos para los comunicados pasados */
+        #comunicados-pasados img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        #comunicados-pasados .comunicado {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 6px;
+            border-left: 5px solid #007bff;
+        }
+
+        /* Estilos para los comunicados actuales */
+        #comunicados-actuales {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border-left: 5px solid #ff0000;
+        }
+
+        /* Asegura que las imágenes no se desborden en pantallas pequeñas */
+        @media (max-width: 768px) {
+            #comunicados-pasados img {
+                max-width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="comunicados">
+    <h2>Comunicados</h2>
+
+    <!-- Comunicados Actuales -->
+    <div id="comunicados-actuales">
+        <h3>Comunicados Actuales</h3>
+        <p>No hay comunicados actuales.</p>
+    </div>
+
+    <!-- Comunicados Pasados -->
+    <div id="comunicados-pasados">
+        <h3>Comunicados Pasados</h3>
+        <!-- Comunicados con fecha pasada -->
+        <div class="comunicado">
+            <h4>Título del Comunicado 1</h4>
+            <p>Este comunicado fue emitido el 15 de Noviembre de 2023.</p>
+            <img src="https://via.placeholder.com/300" alt="Imagen del Comunicado 1">
+        </div>
+
+        <div class="comunicado">
+            <h4>Título del Comunicado 2</h4>
+            <p>Este comunicado fue emitido el 20 de Octubre de 2023.</p>
+            <img src="https://via.placeholder.com/300" alt="Imagen del Comunicado 2">
+        </div>
+
+        <!-- Puedes seguir añadiendo más comunicados pasados aquí -->
+    </div>
+
+</div>
+
+</body>
+</html>
